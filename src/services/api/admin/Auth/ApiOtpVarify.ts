@@ -26,8 +26,6 @@ const ApiOtpVarify = async ({
       });
       await dispatch(Cleaner());
       dispatch(loaderSlice.actions.toggel());
-      window.location.reload();
-
       return true;
     } else {
       Notify("Failed to Verify OTP", "error");
