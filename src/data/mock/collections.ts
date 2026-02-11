@@ -1,0 +1,12 @@
+import type { Collection } from "../../types";
+
+export const mockCollections: Collection[] = [
+  { id: 1, title: "Party Garlands", subtitle: "Premium Handmade Decor", bgColor: "#FFE8F0", accentColor: "#FF6B9D", img: "https://5.imimg.com/data5/IOS/Default/2025/9/541891653/JT/OP/BL/151524151/product-jpeg-500x500.jpeg", productsCount: 42, category: "Party", status: "active" },
+  { id: 2, title: "Paper Flowers", subtitle: "Elegant Floral Creations", bgColor: "#F0F7FF", accentColor: "#4A90E2", img: "https://5.imimg.com/data5/SELLER/Default/2025/6/523107255/SJ/BD/BQ/151524151/paper-party-garland-500x500.jpeg", productsCount: 36, category: "Floral", status: "active" },
+  { id: 3, title: "Birthday Decor", subtitle: "Colorful Celebration Sets", bgColor: "#F0FFF4", accentColor: "#48BB78", img: "https://5.imimg.com/data5/SELLER/Default/2025/6/523216395/QU/RE/VZ/151524151/aakash-kandil-diwali-lanterns-500x500.jpeg", productsCount: 28, category: "Party", status: "active" },
+  { id: 4, title: "Wedding Backdrops", subtitle: "Luxury Paper Designs", bgColor: "#FFF7E6", accentColor: "#ED8936", img: "https://5.imimg.com/data5/SELLER/Default/2025/8/537264055/KO/LP/HB/151524151/ganpati-decoration-paper-fans-500x500.jpeg", productsCount: 19, category: "Wedding", status: "active" },
+  { id: 5, title: "Festive Lanterns", subtitle: "Traditional & Modern", bgColor: "#E6F7FF", accentColor: "#4299E1", img: "https://5.imimg.com/data5/ANDROID/Default/2022/6/YU/UB/KR/151524151/product-jpeg-500x500.jpg", productsCount: 31, category: "Festive", status: "active" },
+  { id: 6, title: "Decorative Fans", subtitle: "Wall & Ceiling Decor", bgColor: "#F9F0FF", accentColor: "#9F7AEA", img: "https://5.imimg.com/data5/IOS/Default/2025/9/541891653/JT/OP/BL/151524151/product-jpeg-500x500.jpeg", productsCount: 24, category: "Home Decor", status: "active" },
+  { id: 7, title: "Paper Streamers", subtitle: "Vibrant Party Decorations", bgColor: "#FFF0F3", accentColor: "#FC8181", img: "https://5.imimg.com/data5/SELLER/Default/2025/6/523107255/SJ/BD/BQ/151524151/paper-party-garland-500x500.jpeg", productsCount: 47, category: "Party", status: "active" },
+  { id: 8, title: "Seasonal Decor", subtitle: "Holiday Special Editions", bgColor: "#F0FFF8", accentColor: "#38B2AC", img: "https://5.imimg.com/data5/SELLER/Default/2025/6/523216395/QU/RE/VZ/151524151/aakash-kandil-diwali-lanterns-500x500.jpeg", productsCount: 22, category: "Seasonal", status: "hidden" },
+];

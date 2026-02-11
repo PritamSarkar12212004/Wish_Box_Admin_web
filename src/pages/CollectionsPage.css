@@ -1,0 +1,28 @@
+.collections-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 24px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+}
+
+.btn-create-collection {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 150ms ease;
+  box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.3);
+}
+
+.btn-create-collection:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.4);
+}
+/* More styles will be added as components are extracted */
