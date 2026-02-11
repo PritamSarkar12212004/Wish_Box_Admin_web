@@ -2,7 +2,11 @@ import { HiOutlineCurrencyRupee, HiOutlineShoppingCart, HiOutlineCube, HiOutline
 import StatCard from "../components/ui/StatCard";
 import RevenueChart from "../components/charts/RevenueChart";
 import CategoryChart from "../components/charts/CategoryChart";
-import { mockDashboardStats, mockRevenueData, mockCategoryData, mockOrders, mockProducts } from "../data";
+import { mockCategoryData, mockOrders, mockProducts } from "../data";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toggel } from '../store/slice/loader/LoaderSlice'
+import ApiDashBoardAnalitc from "../services/api/admin/analitcs/ApiDashBoardAnalitc";
 
 const statusColors: Record<string, string> = {
     pending: "badge-warning",
@@ -13,13 +17,28 @@ const statusColors: Record<string, string> = {
 };
 
 export default function DashboardPage() {
-    const stats = mockDashboardStats;
+    const dispatch = useDispatch()
     const recentOrders = mockOrders.slice(0, 5);
     const topProducts = [...mockProducts].sort((a, b) => b.sales - a.sales).slice(0, 5);
-
+    const FetchData = () => {
+        ApiDashBoardAnalitc({
+            dispatch: dispatch
+        })
+    }
+    const data = {
+        categoryDistribution: useSelector((state: any) => state.DashBoardAnalitcs.categoryDistribution),
+        last7DaysGraph: useSelector((state: any) => state.DashBoardAnalitcs.last7DaysGraph),
+        recentOrders: useSelector((state: any) => state.DashBoardAnalitcs.recentOrders),
+        summaryCards: useSelector((state: any) => state.DashBoardAnalitcs.summaryCards),
+        topProducts: useSelector((state: any) => state.DashBoardAnalitcs.topProducts)
+    }
+    console.log(data.topProducts)
+    useEffect(() => {
+        dispatch(toggel())
+        FetchData()
+    }, [])
     return (
         <div className="dashboard-page" style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-            {/* Stats Grid */}
             <div
                 style={{
                     display: "grid",
@@ -29,29 +48,29 @@ export default function DashboardPage() {
             >
                 <StatCard
                     label="Total Revenue"
-                    value={`₹${stats.totalRevenue.toLocaleString("en-IN")}`}
-                    change={`+${stats.revenueTrend}%`}
+                    value={data?.summaryCards?.totalRevenue}
+                    change={`+${data?.summaryCards?.revenueGrowth}%`}
                     icon={HiOutlineCurrencyRupee}
                     variant="revenue"
                 />
                 <StatCard
                     label="Total Orders"
-                    value={stats.totalOrders.toString()}
-                    change={`+${stats.ordersTrend}%`}
+                    value={data?.summaryCards?.totalOrders}
+                    change={`+${data?.summaryCards?.orderGrowth}%`}
                     icon={HiOutlineShoppingCart}
                     variant="orders"
                 />
                 <StatCard
                     label="Products"
-                    value={stats.totalProducts.toString()}
-                    change={`+${stats.productsTrend}%`}
+                    value={data?.summaryCards?.totalProducts}
+                    change={`+${0}%`}
                     icon={HiOutlineCube}
                     variant="products"
                 />
                 <StatCard
                     label="Customers"
-                    value={stats.totalCustomers.toString()}
-                    change={`+${stats.customersTrend}%`}
+                    value={data?.summaryCards?.totalCustomers}
+                    change={`+${0}%`}
                     icon={HiOutlineUserGroup}
                     variant="customers"
                 />
@@ -64,9 +83,8 @@ export default function DashboardPage() {
                     gridTemplateColumns: "1fr 380px",
                     gap: "16px",
                 }}
-                className="charts-row"
             >
-                <RevenueChart data={mockRevenueData} />
+                <RevenueChart data={data.last7DaysGraph} />
                 <CategoryChart data={mockCategoryData} />
             </div>
             <style>{`@media(max-width:1024px){.charts-row{grid-template-columns:1fr!important}}`}</style>
@@ -99,14 +117,25 @@ export default function DashboardPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {recentOrders.map((order) => (
-                                    <tr key={order.id}>
-                                        <td style={{ fontWeight: 600, color: "var(--text-primary)", fontSize: "13px" }}>{order.id}</td>
-                                        <td style={{ fontSize: "13px" }}>{order.customerName}</td>
-                                        <td style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-primary)" }}>₹{order.total.toLocaleString("en-IN")}</td>
-                                        <td><span className={`badge ${statusColors[order.status] || ""}`}>{order.status}</span></td>
+                                {data?.recentOrders?.map((order: any) => (
+                                    <tr key={order._id}>
+                                        <td style={{ fontWeight: 600, color: "var(--text-primary)", fontSize: "13px" }}>
+                                            {order._id}
+                                        </td>
+                                        <td style={{ fontSize: "13px" }}>
+                                            {order?.customer ? order.customer.name || order.customer : ""}
+                                        </td>
+                                        <td style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-primary)" }}>
+                                            ₹{order.totalAmount}
+                                        </td>
+                                        <td>
+                                            <span className={`badge ${statusColors[order.orderStatus] || ""}`}>
+                                                {order.orderStatus}
+                                            </span>
+                                        </td>
                                     </tr>
-                                ))}
+                                )) || null}
+
                             </tbody>
                         </table>
                     </div>
@@ -128,21 +157,21 @@ export default function DashboardPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {topProducts.map((p) => (
+                                {data.topProducts.map((p: any) => (
                                     <tr key={p.id}>
                                         <td>
                                             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                                <img src={p.img} alt={p.title} style={{ width: "36px", height: "36px", borderRadius: "6px", objectFit: "cover" }} />
+                                                <img src={p?.img ? p.img : "na"} alt={p?.title?p.title:"na"} style={{ width: "36px", height: "36px", borderRadius: "6px", objectFit: "cover" }} />
                                                 <div>
                                                     <div style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-primary)", maxWidth: "180px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                                                         {p.title}
                                                     </div>
-                                                    <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>{p.category}</div>
+                                                    <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>{p?.category ? p?.category : "Na"}</div>
                                                 </div>
                                             </div>
                                         </td>
                                         <td style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-primary)" }}>{p.sales}</td>
-                                        <td style={{ fontSize: "13px", fontWeight: 600, color: "var(--accent)" }}>₹{(p.sales * p.price).toLocaleString("en-IN")}</td>
+                                        <td style={{ fontSize: "13px", fontWeight: 600, color: "var(--accent)" }}>₹{(p.revenue).toLocaleString("en-IN")}</td>
                                     </tr>
                                 ))}
                             </tbody>
