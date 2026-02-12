@@ -5,7 +5,7 @@ import api from "../../../axios/api";
 import Notify from "../../../notification/InAppNotification/Notify";
 
 const ApiGetOrderDetilies = async ({ dispatch }: { dispatch: any }) => {
-  api
+ await api
     .post(ApiPath.ADMIN.ORDER.GET_ORDER_DATA)
     .then((res) => {
       dispatch(

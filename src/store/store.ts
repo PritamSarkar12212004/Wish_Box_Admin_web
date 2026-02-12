@@ -4,6 +4,8 @@ import Loader from "./slice/loader/LoaderSlice";
 import UserLoginCheck from "./slice/Auth/UserLoginCheck";
 import DashBoardAnilitcsSlice from "./slice/analictsData/DashBoardAnilitcsSlice";
 import CustomarDataSlice from "./slice/customar/CustomarDataSlice";
+import OrderSlice from "./slice/order/OrderSlice";
+
 const store = configureStore({
   reducer: {
     loginOtp: LoginOtpSlice,
@@ -11,6 +13,7 @@ const store = configureStore({
     UserLoginCheck: UserLoginCheck,
     DashBoardAnalitcs: DashBoardAnilitcsSlice,
     CustomerSlice: CustomarDataSlice,
+    OrderSlice: OrderSlice,
   },
 });
 

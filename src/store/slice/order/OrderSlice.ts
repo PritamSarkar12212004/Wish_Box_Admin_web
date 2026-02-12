@@ -10,8 +10,8 @@ export const OrderSlice = createSlice({
   initialState,
   reducers: {
     OrderDataProvider: (state, action) => {
-      state.ordersDetiles = action.payload.customers;
-      state.Ordersummary = action.payload.summary;
+      state.ordersDetiles = action.payload.ordersDetiles;
+      state.Ordersummary = action.payload.Ordersummary;
     },
     ClearData: (state) => {
       state.ordersDetiles = null;
