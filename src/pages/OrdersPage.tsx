@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { mockOrders } from "../data";
 import OrderTable from "../components/features/orders/OrderTable";
 import { HiOutlineSearch, HiOutlineFilter } from "react-icons/hi";
+import ApiGetOrderDetilies from "../services/api/admin/order/ApiGetOrderDetilies";
+import { useDispatch } from "react-redux";
+import { toggel } from "../store/slice/loader/LoaderSlice";
 
 export default function OrdersPage() {
     const [orders, setOrders] = useState(mockOrders);
@@ -14,6 +17,13 @@ export default function OrdersPage() {
         const matchStatus = statusFilter === "All" || o.status === statusFilter.toLowerCase();
         return matchSearch && matchStatus;
     });
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(toggel())
+        ApiGetOrderDetilies({
+            dispatch: dispatch
+        })
+    }, [])
 
     return (
         <div className="orders-page">

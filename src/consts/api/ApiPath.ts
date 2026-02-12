@@ -7,6 +7,9 @@ const ApiPath = {
     CUSTOMER: {
       GET_CUSTOMAR_DATA: "/customar/getdata",
     },
+    ORDER: {
+      GET_ORDER_DATA: "/orders/getdata",
+    },
   },
 };
 export default ApiPath;
