@@ -5,8 +5,6 @@ import ProductsPage from "./pages/ProductsPage";
 import OrdersPage from "./pages/OrdersPage";
 import CollectionsPage from "./pages/CollectionsPage";
 import CustomersPage from "./pages/CustomersPage";
-import AnalyticsPage from "./pages/AnalyticsPage";
-import LoginPage from "./pages/LoginPage";
 
 export default function App() {
     return (
@@ -17,7 +15,6 @@ export default function App() {
                 <Route path="/orders" element={<OrdersPage />} />
                 <Route path="/collections" element={<CollectionsPage />} />
                 <Route path="/customers" element={<CustomersPage />} />
-                <Route path="/analytics" element={<AnalyticsPage />} />
             </Route>
         </Routes>
     );

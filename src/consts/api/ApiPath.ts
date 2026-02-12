@@ -4,6 +4,9 @@ const ApiPath = {
   },
   ADMIN: {
     ANALITCS_DASHBOARD: "/analitics/dashboard",
+    CUSTOMER: {
+      GET_CUSTOMAR_DATA: "/customar/getdata",
+    },
   },
 };
 export default ApiPath;

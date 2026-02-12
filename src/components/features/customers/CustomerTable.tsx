@@ -13,38 +13,30 @@ export default function CustomerTable({ customers }: CustomerTableProps) {
                         <tr>
                             <th>Customer</th>
                             <th>Email / Phone</th>
-                            <th>Joined</th>
+                            <th>Join Date</th>
                             <th>Orders</th>
                             <th>Total Spent</th>
                             <th>Last Order</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {customers.map((c) => (
-                            <tr key={c.id}>
+                        {customers.map((c: any) => {
+                            return <tr key={c._id}>
                                 <td>
                                     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                                        <div style={{
-                                            width: "32px", height: "32px", borderRadius: "50%",
-                                            backgroundColor: "var(--accent-light)", color: "var(--accent)",
-                                            display: "flex", alignItems: "center", justifyContent: "center",
-                                            fontWeight: 600, fontSize: "12px"
-                                        }}>
-                                            {c.avatar}
-                                        </div>
                                         <div style={{ fontWeight: 600 }}>{c.name}</div>
                                     </div>
                                 </td>
                                 <td>
                                     <div style={{ fontSize: "13px" }}>{c.email}</div>
-                                    <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>{c.phone}</div>
+                                    <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>{c.whatsappNumber}</div>
                                 </td>
-                                <td>{c.joinedAt}</td>
+                                <td>{new Date(c.createdAt).toLocaleDateString()}</td>
                                 <td>{c.totalOrders}</td>
-                                <td style={{ fontWeight: 600, color: "var(--text-primary)" }}>₹{c.totalSpent.toLocaleString("en-IN")}</td>
-                                <td>{c.lastOrderDate}</td>
+                                <td style={{ fontWeight: 600, color: "var(--text-primary)" }}>₹{c.totalSpent}</td>
+                                <td>{c?.lastOrderDate ? c?.lastOrderDate : "na"}</td>
                             </tr>
-                        ))}
+                        })}
                     </tbody>
                 </table>
             </div>

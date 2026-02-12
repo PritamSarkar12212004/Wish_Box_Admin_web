@@ -1,11 +1,8 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
-import type { CategoryDataPoint } from "../../types";
 
-interface CategoryChartProps {
-    data: CategoryDataPoint[];
-}
-
-export default function CategoryChart({ data }: CategoryChartProps) {
+export default function CategoryChart({ mainData }: {
+    mainData: any
+}) {
     return (
         <div className="glass-card" style={{ padding: "20px" }}>
             <h3 style={{ fontSize: "16px", fontWeight: 700, color: "var(--text-primary)", marginBottom: "16px" }}>
@@ -16,7 +13,7 @@ export default function CategoryChart({ data }: CategoryChartProps) {
                     <ResponsiveContainer>
                         <PieChart>
                             <Pie
-                                data={data}
+                                data={mainData}
                                 cx="50%"
                                 cy="50%"
                                 innerRadius={50}
@@ -25,7 +22,7 @@ export default function CategoryChart({ data }: CategoryChartProps) {
                                 stroke="none"
                                 paddingAngle={2}
                             >
-                                {data.map((entry, index) => (
+                                {mainData.map((entry, index) => (
                                     <Cell key={index} fill={entry.color} />
                                 ))}
                             </Pie>
@@ -44,7 +41,7 @@ export default function CategoryChart({ data }: CategoryChartProps) {
                     </ResponsiveContainer>
                 </div>
                 <div style={{ flex: 1, minWidth: "150px" }}>
-                    {data.map((item, i) => (
+                    {mainData.map((item, i) => (
                         <div
                             key={i}
                             style={{

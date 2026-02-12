@@ -1,17 +1,34 @@
-import { useState } from "react";
-import { mockCustomers } from "../data";
+import { useEffect, useState } from "react";
 import CustomerTable from "../components/features/customers/CustomerTable";
-import { HiOutlineSearch, HiOutlineUserAdd } from "react-icons/hi";
+import { HiOutlineSearch } from "react-icons/hi";
+import ApiCustomarData from "../services/api/admin/customer/ApiCustomarData";
+import { useDispatch, useSelector } from "react-redux";
+import { toggel } from "../store/slice/loader/LoaderSlice";
 
 export default function CustomersPage() {
-    const [customers] = useState(mockCustomers);
     const [search, setSearch] = useState("");
+    const data = {
+        customerData: useSelector((state: any) => state.CustomerSlice.customers),
+        customerSummaryData: useSelector((state: any) => state.CustomerSlice.summary)
+    }
+    const filtered = data?.customerData
+        ? data.customerData.filter((c: any) => {
+            const nameMatch = c.name?.toLowerCase().includes(search.toLowerCase());
+            const emailMatch = c.email
+                ? c.email.toLowerCase().includes(search.toLowerCase())
+                : false;
 
-    const filtered = customers.filter(c =>
-        c.name.toLowerCase().includes(search.toLowerCase()) ||
-        c.email.toLowerCase().includes(search.toLowerCase())
-    );
+            return nameMatch || emailMatch;
+        })
+        : [];
 
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(toggel());
+        ApiCustomarData({
+            dispatch
+        })
+    }, [])
     return (
         <div className="customers-page">
             <div className="page-header" style={{ marginBottom: "32px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -19,10 +36,6 @@ export default function CustomersPage() {
                     <h1 className="page-title">Customers</h1>
                     <p className="page-subtitle">View and manage your customer base</p>
                 </div>
-                <button className="btn-primary">
-                    <HiOutlineUserAdd />
-                    Add Customer
-                </button>
             </div>
 
             <div style={{ marginBottom: "24px", position: "relative", maxWidth: "480px" }}>
@@ -36,8 +49,9 @@ export default function CustomersPage() {
                     onChange={(e) => setSearch(e.target.value)}
                 />
             </div>
-
-            <CustomerTable customers={filtered} />
+            {
+                data?.customerData ? <CustomerTable customers={filtered} /> : null
+            }
         </div>
     );
 }

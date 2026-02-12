@@ -23,7 +23,6 @@ const navItems = [
     { path: "/orders", icon: HiOutlineClipboardList, label: "Orders" },
     { path: "/collections", icon: HiOutlineColorSwatch, label: "Collections" },
     { path: "/customers", icon: HiOutlineUsers, label: "Customers" },
-    { path: "/analytics", icon: HiOutlineChartBar, label: "Analytics" },
 ];
 
 export default function Sidebar({ collapsed, onToggle, mobileOpen, onMobileClose }: SidebarProps) {

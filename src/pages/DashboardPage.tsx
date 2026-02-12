@@ -2,7 +2,6 @@ import { HiOutlineCurrencyRupee, HiOutlineShoppingCart, HiOutlineCube, HiOutline
 import StatCard from "../components/ui/StatCard";
 import RevenueChart from "../components/charts/RevenueChart";
 import CategoryChart from "../components/charts/CategoryChart";
-import { mockCategoryData, mockOrders, mockProducts } from "../data";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggel } from '../store/slice/loader/LoaderSlice'
@@ -18,8 +17,6 @@ const statusColors: Record<string, string> = {
 
 export default function DashboardPage() {
     const dispatch = useDispatch()
-    const recentOrders = mockOrders.slice(0, 5);
-    const topProducts = [...mockProducts].sort((a, b) => b.sales - a.sales).slice(0, 5);
     const FetchData = () => {
         ApiDashBoardAnalitc({
             dispatch: dispatch
@@ -32,7 +29,13 @@ export default function DashboardPage() {
         summaryCards: useSelector((state: any) => state.DashBoardAnalitcs.summaryCards),
         topProducts: useSelector((state: any) => state.DashBoardAnalitcs.topProducts)
     }
-    console.log(data.topProducts)
+    const categoryDistribution = data?.categoryDistribution || [];
+    const transformedData = categoryDistribution.map((item: any) => ({
+        name: item.category,
+        value: item.percentage,
+        color: item.color,
+    }));
+
     useEffect(() => {
         dispatch(toggel())
         FetchData()
@@ -85,7 +88,7 @@ export default function DashboardPage() {
                 }}
             >
                 <RevenueChart data={data.last7DaysGraph} />
-                <CategoryChart data={mockCategoryData} />
+                <CategoryChart mainData={transformedData} />
             </div>
             <style>{`@media(max-width:1024px){.charts-row{grid-template-columns:1fr!important}}`}</style>
 
@@ -120,10 +123,10 @@ export default function DashboardPage() {
                                 {data?.recentOrders?.map((order: any) => (
                                     <tr key={order._id}>
                                         <td style={{ fontWeight: 600, color: "var(--text-primary)", fontSize: "13px" }}>
-                                            {order._id}
+                                            {order.orderId}
                                         </td>
                                         <td style={{ fontSize: "13px" }}>
-                                            {order?.customer ? order.customer.name || order.customer : ""}
+                                            {order?.customer ? order.customer.name || order.customer : "na"}
                                         </td>
                                         <td style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-primary)" }}>
                                             ₹{order.totalAmount}
@@ -157,23 +160,38 @@ export default function DashboardPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.topProducts.map((p: any) => (
-                                    <tr key={p.id}>
-                                        <td>
-                                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                                <img src={p?.img ? p.img : "na"} alt={p?.title?p.title:"na"} style={{ width: "36px", height: "36px", borderRadius: "6px", objectFit: "cover" }} />
-                                                <div>
-                                                    <div style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-primary)", maxWidth: "180px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                                                        {p.title}
+                                {Array.isArray(data?.topProducts) && data.topProducts.length > 0 ? (
+                                    data.topProducts.map((p: any) => (
+                                        <tr key={p.product}>
+                                            <td>
+                                                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                                    <img
+                                                        src={p?.image ? p.image : "na"}
+                                                        alt={p?.product ? p.product : "na"}
+                                                        style={{ width: "36px", height: "36px", borderRadius: "6px", objectFit: "cover" }}
+                                                    />
+                                                    <div>
+                                                        <div style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-primary)", maxWidth: "180px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                                                            {p.product}
+                                                        </div>
+                                                        <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>
+                                                            {p?.category ? p.category : "Na"}
+                                                        </div>
                                                     </div>
-                                                    <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>{p?.category ? p?.category : "Na"}</div>
                                                 </div>
-                                            </div>
+                                            </td>
+                                            <td style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-primary)" }}>{p.sales}</td>
+                                            <td style={{ fontSize: "13px", fontWeight: 600, color: "var(--accent)" }}>₹{p.revenue.toLocaleString("en-IN")}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={3} style={{ textAlign: "center", fontSize: "13px", color: "var(--text-muted)" }}>
+                                            No top products yet
                                         </td>
-                                        <td style={{ fontSize: "13px", fontWeight: 600, color: "var(--text-primary)" }}>{p.sales}</td>
-                                        <td style={{ fontSize: "13px", fontWeight: 600, color: "var(--accent)" }}>₹{(p.revenue).toLocaleString("en-IN")}</td>
                                     </tr>
-                                ))}
+                                )}
+
                             </tbody>
                         </table>
                     </div>
