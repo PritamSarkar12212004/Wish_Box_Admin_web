@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { mockCollections } from "../data";
 import type { Collection } from "../types";
-import { HiOutlinePlus } from "react-icons/hi";
+import { HiOutlinePlus, HiOutlinePencil } from "react-icons/hi"; // 👈 added pencil icon
 
 // Components
-import CollectionStats from "../components/features/collections/CollectionStats";
 import CollectionFilters from "../components/features/collections/CollectionFilters";
 import CollectionCard from "../components/features/collections/CollectionCard";
 import CollectionModal from "../components/features/collections/CollectionModal";
@@ -119,19 +118,37 @@ export default function CollectionsPage() {
 
   return (
     <div className="collections-page">
-      <div className="page-header">
-        <div className="header-content">
+      <div className="page-header mb-8">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          {/* Left: Title + Subtitle */}
           <div>
-            <h1 className="page-title">Collections</h1>
-            <p className="page-subtitle">Group your products into curated collections</p>
+            <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+              Collections
+            </h1>
+            <p className="text-sm text-slate-500 mt-1">
+              Group your products into curated collections
+            </p>
           </div>
-          <button onClick={openAddModal} className="btn-add-product">
-            <HiOutlinePlus style={{ width: "20px", height: "20px", marginRight: "8px" }} />
+
+          {/* Right: Create Button */}
+          <button
+            onClick={openAddModal}
+            style={{
+              padding: 10
+            }}
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 
+                 bg-gradient-to-r from-indigo-600 to-blue-500 
+                 hover:from-indigo-700 hover:to-blue-600 
+                 text-white font-medium text-sm rounded-full 
+                 shadow-lg shadow-indigo-200/50 
+                 hover:shadow-xl hover:shadow-indigo-300/50 
+                 transition-all duration-200 ease-out 
+                 hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <HiOutlinePlus className="w-5 h-5" />
             Create Collection
           </button>
         </div>
-
-        <CollectionStats stats={stats} />
       </div>
 
       <CollectionFilters
@@ -184,7 +201,10 @@ export default function CollectionsPage() {
                     <td>{c.productsCount}</td>
                     <td><span className={`badge ${c.status === 'active' ? 'badge-success' : 'badge-warning'}`}>{c.status}</span></td>
                     <td>
-                      <button onClick={() => openEditModal(c)} className="btn-ghost" style={{ padding: "6px" }}><HiOutlinePlus /></button>
+                      {/* ✅ Fixed: now uses pencil icon instead of plus */}
+                      <button onClick={() => openEditModal(c)} className="btn-ghost" style={{ padding: "6px" }}>
+                        <HiOutlinePencil />
+                      </button>
                     </td>
                   </tr>
                 ))}

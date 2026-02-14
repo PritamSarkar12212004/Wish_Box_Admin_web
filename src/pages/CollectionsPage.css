@@ -1,11 +1,38 @@
+/* CollectionsPage.css */
 .collections-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   padding: 24px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    sans-serif;
 }
 
-.btn-create-collection {
+.page-header {
+  margin-bottom: 32px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 4px 0;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: #475569;
+  margin: 0;
+}
+
+.btn-add-product {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -21,8 +48,101 @@
   box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.3);
 }
 
-.btn-create-collection:hover {
+.btn-add-product:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.4);
 }
-/* More styles will be added as components are extracted */
+
+/* Collection grid – fixes the width issue */
+.collections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+/* Optional: limit maximum width of individual cards */
+.collection-card {
+  max-width: 100%; /* respects grid cell */
+  height: fit-content;
+}
+
+/* List view styles */
+.collections-list {
+  margin-top: 24px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+  padding: 20px;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+.admin-table th {
+  padding: 12px 16px;
+  background: #f1f5f9;
+  color: #1e293b;
+  font-weight: 600;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.admin-table td {
+  padding: 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 150ms;
+}
+
+.btn-ghost:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+/* Badge styles */
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.badge-success {
+  background: #10b98120;
+  color: #10b981;
+}
+
+.badge-warning {
+  background: #f59e0b20;
+  color: #f59e0b;
+}
