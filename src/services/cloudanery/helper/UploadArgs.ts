@@ -1,9 +1,9 @@
 export type UploadArgs =
   | {
       count: "single";
-      file: File;
+      file: File | string;
     }
   | {
       count: "multiple";
-      file: File[];
+      file: (File | string)[];
     };

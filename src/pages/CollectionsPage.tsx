@@ -10,6 +10,7 @@ import CollectionModal from "../components/features/collections/CollectionModal"
 
 // Styles
 import "./CollectionsPage.css";
+import Cloudanery from "../services/cloudanery/Cloudanery";
 
 export default function CollectionsPage() {
   const [collections, setCollections] = useState(mockCollections);
@@ -21,14 +22,9 @@ export default function CollectionsPage() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState('newest');
 
-  const categories = Array.from(new Set(collections.map(c => c.category)));
+  const [imgUploadProgress, setImgUploadProgress] = useState(0)
 
-  const stats = {
-    total: collections.length,
-    active: collections.filter(c => c.status === 'active').length,
-    hidden: collections.filter(c => c.status === 'hidden').length,
-    totalProducts: collections.reduce((acc, c) => acc + c.productsCount, 0)
-  };
+  const categories = Array.from(new Set(collections.map(c => c.category)));
 
   const [form, setForm] = useState({
     title: "",
@@ -79,12 +75,12 @@ export default function CollectionsPage() {
       accentColor: c.accentColor,
       img: c.img,
       category: c.category,
-      description: "", // Mock data doesn't have description in type yet
+      description: "",
     });
     setModalOpen(true);
   };
 
-  const handleSave = () => {
+  const handleSave = async() => {
     const data: Collection = {
       id: editing ? editing.id : Date.now(),
       title: form.title,
@@ -96,6 +92,14 @@ export default function CollectionsPage() {
       category: form.category,
       status: editing ? editing.status : "active",
     };
+    console.log(data)
+   const  imgData= await Cloudanery({
+      count: "single",
+      file: data.img,
+      onProgress: (p) => setImgUploadProgress(p)
+    })
+    console.log(imgUploadProgress)
+    console.log(imgData)
 
     if (editing) {
       setCollections(collections.map(c => c.id === editing.id ? data : c));
@@ -120,7 +124,6 @@ export default function CollectionsPage() {
     <div className="collections-page">
       <div className="page-header mb-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          {/* Left: Title + Subtitle */}
           <div>
             <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
               Collections

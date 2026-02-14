@@ -1,15 +1,26 @@
 import axios from "axios";
 import CloudinaryToken from "../../consts/token/services/CloudinaryToken";
 import ValidateFile from "./helper/ValidateFile";
+import ImgConvator from "./helper/ImgConvator";
 import { UploadWithProgressArgs } from "./helper/UploadWithProgressArgs";
+
+const normalizeFile = (input: File | string): File => {
+  if (typeof input === "string") {
+    return ImgConvator(input);
+  }
+  return input;
+};
 
 const uploadToCloudinary = async ({
   file,
   count,
   onProgress,
 }: UploadWithProgressArgs) => {
-  const uploadSingle = async (singleFile: File) => {
+  const uploadSingle = async (input: File | string) => {
+    const singleFile = normalizeFile(input);
+
     ValidateFile(singleFile, count);
+
     const formData = new FormData();
     formData.append("file", singleFile);
     formData.append(
@@ -22,12 +33,9 @@ const uploadToCloudinary = async ({
       `https://api.cloudinary.com/v1_1/${CloudinaryToken.CLOUDANERY_PRESET.CLOUDE_NAME}/image/upload`,
       formData,
       {
-        onUploadProgress: (progressEvent) => {
-          if (!progressEvent.total || !onProgress) return;
-          const percent = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total,
-          );
-
+        onUploadProgress: (e) => {
+          if (!e.total || !onProgress) return;
+          const percent = Math.round((e.loaded * 100) / e.total);
           onProgress(percent);
         },
       },
@@ -36,10 +44,13 @@ const uploadToCloudinary = async ({
     return res.data;
   };
 
+  // ✅ SINGLE
   if (count === "single") {
-    return await uploadSingle(file);
+    return uploadSingle(file);
   }
-  return await Promise.all(file.map(uploadSingle));
+
+  // ✅ MULTIPLE
+  return Promise.all(file.map(uploadSingle));
 };
 
 export default uploadToCloudinary;
